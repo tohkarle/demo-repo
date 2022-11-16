@@ -1,4 +1,4 @@
-# Heading
+# This is a demo-repo
 
-## Subheading
-1. Hello World
+## Contents of the repo:
+1. git.txt
