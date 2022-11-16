@@ -67,3 +67,7 @@ Summary:
    he/she needs to pull the image we have built and all necessary images needed to run the image we have built e.g. mongo, mogo-
    express, then create a yaml file that contains the necessary images (with presets settings set to his/her preference), and lastly
    'docker-compose -f (name of yaml file)' to start all the containers within Docker(Virtual Environment).
+5. Container is like a Virtual Environment on its own. Docker has networks to connect the containers together, allowing them to talk
+   to each other, but at the same time you can access each of the container individually as well using 'docker exec -it'.
+6. I am assuming we can also think of a container like a 'library' in Python (?) We include it to use some of the functions inside
+   the container in order to run the application.
