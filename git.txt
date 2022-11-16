@@ -1,0 +1,30 @@
+Basic Git Commands:
+git init    // to initialize a directory to git directory.
+git remote add origin (SSH)
+git remote -v   // to check whether the remote repo is connected to this repo
+git add
+git commit -m "TItle" -m "description"
+git commit -am "TItle" -m "description"
+git push origin main
+git push -u origin (name of branch)
+git push --force    // Forcefully push the local repo to remote repo, overwriting(?) all the commits in the remote repo.
+git pull
+git branch
+git branch -d
+git checkout
+git checkout -b
+git reset   // to undo staging/unstage
+git reset HEAD~1    // HEAD is a pointer that points the last/latest commit, HEAD~1 will point to the commit before the last commit
+git log     // to see commit message and hash
+git reset (hash)    // to just unstage to that point (e.g. to make changes to the commit message)
+git reset --hard (hash)     // to undo all the changes + unstage to that point
+git diff or git diff (name of branch)
+git merge (name of branch)  // take note this only merges locally
+
+Pull Request:
+1. Create a new branch.
+2. Work on the new branch.
+3. Add, commit and push to remote repo.
+4. Create PR.
+5. From github select where you want to merge to.
+6. Admin(?) will review the PR and either accept or close the PR.
