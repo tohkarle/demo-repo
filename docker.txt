@@ -1,0 +1,69 @@
+Basic Docker Commands:
+docker ps
+docker ps -a
+docker images
+docker pull (image)
+docker run (image)      // Starts/Runs an image to create a new container. Takes up the terminal.
+docker run -d (image)   // Runs in detached mode, does not take up the terminal.
+docker run -p(local port):(image port) (image)     // e.g. docker run -d -p27017:27017 mongo
+                                                   // You can check the Environment Variables of the image on the websit,
+                                                      different images have different variables you can set for the container.
+                                                      e.g. for the mongo image, it says on the website that we can change the
+                                                           username and the password of the root of the container using the 
+                                                           codes they provide:
+                                                           docker run -d \ 
+                                                           -p 27017:27017 \
+                                                           -e MONGO_INITDB_ROOT_USERNAME=admin \
+                                                           -e MONGO_INITDB_ROOT_PASSWORD=password \
+                                                           --name mongodb \
+                                                           --network or --net mongo-network \
+                                                           mongo
+                                                           ** Instead of having to 'docker run' the image to create the container.
+                                                           We can create a yaml file and run 'docker-compose -f up' to create the 
+                                                           container directly from the yaml file, with all the necessary presets(?)
+                                                           settings e.g. ports, environment, etc.
+docker run -d -p(local port):(image port) --name (name) (image)     //e.g. docker run -d -p6001:6379 --name redis-second redis
+docker stop (CONTAINER ID)
+docker start (CONTAINER ID)    // Restarts a stopped container, different from 'docker run' which starts an image.
+docker logs (CONTAINER ID or NAME)    // Can be used to for debugging, tracking the progress of the container.
+docker logs (CONTAINER ID or NAME) | tail   //Displays the last part of the logs
+docker logs (CONTAINER ID or NAME) -f       //String the logs. Mark the last log, make some changes and the new logs will show
+                                              below the mark.
+docker exec -it (CONTAINER ID or NAME) /bin/bash    // 'it' stands for interactive terminal. This command navigates into the
+or                                                     container's terminal in case you need to do something in the terminal of
+docker exec -it (CONTAINER ID or NAME) /bin/sh         the container. Can navigate the terminal almost like a normal terminal,
+                                                       it is a linux terminal because docker runs on linux application(layer).
+                                                       Key in "exit" to exit the container's terminal.
+                                                       e.g. docker exec -it redis-second /bin/bash
+docker network ls   // Lists all the available or created networks within docker.
+docker network create (name of network you want to create)  // Creates a network within docker.
+                                                               e.g. docker network create mongo-network
+docker-compose -f (name of file in .yaml) up    // 'up' will start/create all containers in the yaml file. It also automatically
+                                                   creates a network for the containers inside the file within docker, so there is
+                                                   no need to manually create a network for them using 'docker network create'.
+docker-compose -f (name of file in .yaml) down  // 'down' will shut down all containers in the yaml file. In addition to stopping
+                                                   the containers, it removes the containers and removes the network it created
+                                                   beforehand for the containers.
+docker build -t (name of image you want to build):(version/tag of the image) (location for Dockerfile)
+                                                                    //e.g. docker build -t my-app:1.0 .
+                                                                      When you adjust a Dockerfile, you have to rebuild the image.
+docker rmi (IMAGE ID or NAME(?))    // Removing/Deleting an image. The IMAGE ID can be found in 'docker images'.
+docker rm (CONTAINER ID or NAME)    // Removing/Deleting a container. You have to delete the container before you can delete the
+                                       image.
+docker login    // To pull image from private repository.
+docker run -v (host directory):(container directory)    // e.g. docker run -v /home/mount/data:/var/lib/mysql/data (Host Volumes)
+docker run -v (container directory)    // e.g. docker run -v /var/lib/mysql/data (Anonymous Volumes)
+docker run -v (name of the folder of host file system, up to me to name):(container directory)  // You can reference the volume 
+                                                                                                   by name (Named Volumes)
+
+
+Summary:
+1. You can think of an image like a set of instructions, because you build an image from a Dockerfile which (kinda) contains all the
+   instructions to instruct the container to e.g. RUN mkdir -p/home/app, COPY . /home/app (copy files from host to container).
+2. You can think of a container like a machine that executes the instructions from the image.
+3. When you are building an image, you always build from another base image, think of it as a base layer. This way, you can already
+   use/executes functions that are from the base image in the container.
+4. After building an image and pushing it to the docker repo, when someone wants to use/deploy the containerized app that we built,
+   he/she needs to pull the image we have built and all necessary images needed to run the image we have built e.g. mongo, mogo-
+   express, then create a yaml file that contains the necessary images (with presets settings set to his/her preference), and lastly
+   'docker-compose -f (name of yaml file)' to start all the containers within Docker(Virtual Environment).

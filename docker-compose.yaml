@@ -1,0 +1,31 @@
+version: '3'
+services:
+  mongodb:  # Name of container you want to set, basically '--name'.
+    image: mongo  # Name of the image from docker hub. In this case, you only need to state the name because it is pulling directly 
+                    from docker hub. If you want to pull from a private repository, you'll need to add some stuff in front.
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db   # Named Volumes. This means that you would like to mount the folder name 'db_data' into this container
+                                as volumes.
+                              # This path differs for each database, e.g. mysql: /var/lib/mysql, postgres: /var/lib/postgresql/data.
+                              # The data in the container will be replicated into the mongo-data folder located in the local file 
+                                system. So upon restarting the container, the data inside the volumes folder can be replicated into
+                                the container's data folder and the container will have the previous data loaded.
+                              # Docker Volumes Location: /var/lib/docker/volumes
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_USERNAME=password
+  mongo-express:
+      image: mongo-express
+    ports:
+      - 8080:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+volumes:
+  mongo-data:   # List the names of all the volumes you have defined, that you want to mount into the containers. You can mount the
+                  same folder/name to different containers if they share the same data.
+    driver: local   # This folder is going to be created by Docker, which is the driver itself. This line tells Docker to create the
+                      folder on the local file system.
